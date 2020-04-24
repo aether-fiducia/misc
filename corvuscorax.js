@@ -12,17 +12,14 @@ client.on("ready", () => {
 
 // On a message being sent to any channel of a connected server
 client.on("message", (message) => {
-    if (!message.content.startsWith(config.prefix) || !message.content.startsWith("??") || message.author.bot) return;
+    if ((!message.content.startsWith(config.prefix) && !message.content.startsWith("??")) || message.author.bot) return;
     if (message.content.startsWith("??")) {
-        console.log("Read message : ??");
         message.channel.send("Filler for help text");
     } else
     if (message.content.startsWith(config.prefix + "players")) {
-        console.log("Read message : ??");
         message.channel.send("Filler for when players are listed");
     } else
     if (message.content.startsWith(config.prefix + "deaths")) {
-        console.log("Read message : ??");
         message.channel.send("Filler for when death data is shown");
     }
 });
