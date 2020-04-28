@@ -1,15 +1,10 @@
 const Discord = require("discord.js")
 const client = new Discord.Client()
-var net = require('net)
+var net = require('net')
 const config = require("./config.json")
-
+require('buffer')
 const serverstatus = config.servername
 const DEFAULT_TIMEOUT = 5
-const hook = net.connect(25565, config.hostname, () => {
-    var buff = buffer.from([0xFE, 0x001]);
-    hook.write(buff);
-});
-hook.setTimmeout(DEFAULT_TIMEOUT * 1000)
 
 client.login(config.token)
 
@@ -17,7 +12,7 @@ client.login(config.token)
 client.on("ready", () => {
     console.log("I am ready");
     console.log(client);
-    client.user.setStatus("Players online: " +
+    client.user.setStatus("Players online: coming soon");
 });
 
 // On a message being sent to any channel of a connected server
@@ -27,7 +22,24 @@ client.on("message", (message) => {
         message.channel.send("Filler for help text");
     } else
     if (message.content.startsWith(config.prefix + "players")) {
-        message.channel.send("Filler for when players are listed");
+        var hook = net.connect(25565, serverstatus, () => {
+            var buff = Buffer.from([0xFE, 0x001]);
+            hook.write(buff);
+        });
+
+        hook.on('data', (data) => {
+            if (data == null) {
+                hook.end();
+                process.exit();
+            }
+            var process = data.toString().split("\x00\x00\x00");
+            message.channel.send(process[4] + ' of 20 players online.');
+            
+        });
+
+        hook.on('error', (error) => {
+            console.log(error);
+        });
     }
 });
 
