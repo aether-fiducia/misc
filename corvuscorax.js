@@ -4,7 +4,8 @@ var net = require('net')
 const config = require("./config.json")
 require('buffer')
 const serverstatus = config.servername
-const DEFAULT_TIMEOUT = 5
+const DEFAULT_TIMEOUT = 5i
+const changelog = require("./changelogs/May02.json")
 
 client.login(config.token)
 
@@ -39,7 +40,11 @@ client.on("message", (message) => {
 
         hook.on('error', (error) => {
             console.log(error);
+            message.channel.send('I ran into an error, pinging @Admin. Maybe the server is down?');
         });
+    }
+    else if (message.content.startsWith(config.prefix + "changes")) {
+        message.channel.send("'''json\n" + changlog.recent + "\n'''");
     }
 });
 
