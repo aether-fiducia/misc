@@ -4,7 +4,7 @@ var net = require('net')
 const config = require("./config.json")
 require('buffer')
 const serverstatus = config.servername
-const DEFAULT_TIMEOUT = 5i
+const DEFAULT_TIMEOUT = 5
 const changelog = require("./changelogs/May02.json")
 
 client.login(config.token)
